@@ -40,9 +40,9 @@ If $hFileSource = -1 Then
     Exit
 EndIf
 
-Local $sFileSourceLName = FileGetLongName ( $CmdLine[1] ) 															; Source file full path
+Local $sFileSourceLName = FileGetLongName ( $CmdLine[1] ) 								; Source file full path
 Local $sFileOutLName = ( StringLeft ( $CmdLine[1], (( StringInStr ( $CmdLine[1], "." , 0 , -1 ))-1)) & ".bin" )		; Destination file .bin
-MsgBox ( 0, "", $sFileOutLName )
+;MsgBox ( 0, "", $sFileOutLName )
 Local $iFileSourceLength = _FileCountLines ( $hFileSource )
 ConsoleWrite ( "Source file: " & $sFileSourceLName & " ; " & $iFileSourceLength & " lines" & @CRLF )
 
@@ -73,7 +73,7 @@ EndIf
 If $iCmdLineParamSigned > 1 Then
 	Local $dSourceDataExtAddressOffset = 8
 	Local $dSourceDataLinAddressOffset = 32768
-	ConsoleWrite ( "Signed Addresses: YES" & @CRLF )
+;	ConsoleWrite ( "Signed Addresses: YES" & @CRLF )
 Else
 	Local $dSourceDataExtAddressOffset = 16
 	Local $dSourceDataLinAddressOffset = 65536
@@ -85,12 +85,12 @@ Local $iFileSourceReadLoop = 1
 Local $dSourceDataExtAddress = 0
 While $iFileSourceReadLoop <= $iFileSourceLength
 
-	Local $sSourceLine 			= FileReadLine ( $hFileSource , $iFileSourceReadLoop )
+	Local $sSourceLine 		= FileReadLine ( $hFileSource , $iFileSourceReadLoop )
 	Local $iLengthSourceLine 	= StringLen ( $sSourceLine )
 	Local $dSourceDataBytes 	= Dec (StringMid ( $sSourceLine, 2 , 2 ))
 	Local $dSourceDataLength 	= $dSourceDataBytes * 2
 	Local $dSourceDataAddress 	= Dec( StringMid ( $sSourceLine, 4 , 4 )) + ( $dSourceDataExtAddress) + ($dSourceDataAddressOffset)
-	Local $sSourceData 			= StringMid ( $sSourceLine, 10 , $dSourceDataLength )
+	Local $sSourceData 		= StringMid ( $sSourceLine, 10 , $dSourceDataLength )
 	Local $dSourceExtended 		= StringMid ( $sSourceLine, 8 , 2 )
 
 	Switch $dSourceExtended
