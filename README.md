@@ -2,8 +2,8 @@
 A simple Intel HEX to BINARY File Converter
 
 A simple Intel .hex file to .bin command line application without limitations made in AutoIt.
-It incrementally reads the origin Intel HEX file and converts it into a binary (.bin) file without making any kind of sum checking, redundancy analysis, data overlappings or syntax in the origin file.
-It just reads the .hex file from line 1 until it finds the EOF marker.
+It incrementally reads the origin Intel HEX file and converts it into a binary (.bin) file without making any kind of redundancy analysis, nor sum, data, overlappings or syntax checkings in the origin file.
+It just reads the .hex file from line 1 until it finds the first EOF marker.
 
 It supports Extended Linear and Segment Address Records (HEX386 & HEX86).
 
