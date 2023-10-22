@@ -4,10 +4,12 @@
 #AutoIt3Wrapper_Outfile=0x01.exe
 #AutoIt3Wrapper_Compression=4
 #AutoIt3Wrapper_UseUpx=y
+#AutoIt3Wrapper_Compile_Both=y
+#AutoIt3Wrapper_UseX64=y
 #AutoIt3Wrapper_Change2CUI=y
 #AutoIt3Wrapper_Res_Comment=Converts Intel HEX files to BIN
 #AutoIt3Wrapper_Res_Description=Converts Intel HEX files to BIN
-#AutoIt3Wrapper_Res_Fileversion=0.5.3.15
+#AutoIt3Wrapper_Res_Fileversion=0.5.3.16
 #AutoIt3Wrapper_Res_Fileversion_AutoIncrement=p
 #AutoIt3Wrapper_Res_CompanyName=JuananBow
 #AutoIt3Wrapper_Res_LegalCopyright=JuananBow
@@ -40,7 +42,7 @@ If $hFileSource = -1 Then
     Exit
 EndIf
 
-Local $sFileSourceLName = FileGetLongName ( $CmdLine[1] ) 								; Source file full path
+Local $sFileSourceLName = FileGetLongName ( $CmdLine[1] ) 															; Source file full path
 Local $sFileOutLName = ( StringLeft ( $CmdLine[1], (( StringInStr ( $CmdLine[1], "." , 0 , -1 ))-1)) & ".bin" )		; Destination file .bin
 ;MsgBox ( 0, "", $sFileOutLName )
 Local $iFileSourceLength = _FileCountLines ( $hFileSource )
@@ -73,7 +75,7 @@ EndIf
 If $iCmdLineParamSigned > 1 Then
 	Local $dSourceDataExtAddressOffset = 8
 	Local $dSourceDataLinAddressOffset = 32768
-;	ConsoleWrite ( "Signed Addresses: YES" & @CRLF )
+	ConsoleWrite ( "Signed Addresses: YES" & @CRLF )
 Else
 	Local $dSourceDataExtAddressOffset = 16
 	Local $dSourceDataLinAddressOffset = 65536
@@ -83,14 +85,15 @@ EndIf
 Local $hTimer = TimerInit()
 Local $iFileSourceReadLoop = 1
 Local $dSourceDataExtAddress = 0
+Local $dSourceDataLinAddress = 0
 While $iFileSourceReadLoop <= $iFileSourceLength
 
-	Local $sSourceLine 		= FileReadLine ( $hFileSource , $iFileSourceReadLoop )
+	Local $sSourceLine 			= FileReadLine ( $hFileSource , $iFileSourceReadLoop )
 	Local $iLengthSourceLine 	= StringLen ( $sSourceLine )
 	Local $dSourceDataBytes 	= Dec (StringMid ( $sSourceLine, 2 , 2 ))
 	Local $dSourceDataLength 	= $dSourceDataBytes * 2
-	Local $dSourceDataAddress 	= Dec( StringMid ( $sSourceLine, 4 , 4 )) + ( $dSourceDataExtAddress) + ($dSourceDataAddressOffset)
-	Local $sSourceData 		= StringMid ( $sSourceLine, 10 , $dSourceDataLength )
+	Local $dSourceDataAddress 	= Dec( StringMid ( $sSourceLine, 4 , 4 )) + ( $dSourceDataExtAddress) + ( $dSourceDataLinAddress) + ($dSourceDataAddressOffset)
+	Local $sSourceData 			= StringMid ( $sSourceLine, 10 , $dSourceDataLength )
 	Local $dSourceExtended 		= StringMid ( $sSourceLine, 8 , 2 )
 
 	Switch $dSourceExtended
@@ -105,7 +108,7 @@ While $iFileSourceReadLoop <= $iFileSourceLength
 			Local $dSourceDataExtAddress = dec ($sSourceData) * $dSourceDataExtAddressOffset
 			ConsoleWrite ( "Line: " & $iFileSourceReadLoop & " / " & $iFileSourceLength & "   Data: (" & $dSourceExtended & ") Extended Segment Address   New address offset: " & "0x" & hex( $dSourceDataExtAddress) & @CRLF )
 		Case 04 ;Extended Linear Address
-			Local $dSourceDataExtAddress = dec ($sSourceData) * $dSourceDataLinAddressOffset
+			Local $dSourceDataLinAddress = dec ($sSourceData) * $dSourceDataLinAddressOffset
 			ConsoleWrite ( "Line: " & $iFileSourceReadLoop & " / " & $iFileSourceLength & "   Data: (" & $dSourceExtended & ") Extended Linear Address   New address offset: " & "0x" & hex( $dSourceDataExtAddress) & @CRLF )
 	EndSwitch
 
