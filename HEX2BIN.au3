@@ -9,7 +9,7 @@
 #AutoIt3Wrapper_Change2CUI=y
 #AutoIt3Wrapper_Res_Comment=Converts Intel HEX files to BIN
 #AutoIt3Wrapper_Res_Description=Converts Intel HEX files to BIN
-#AutoIt3Wrapper_Res_Fileversion=0.5.3.16
+#AutoIt3Wrapper_Res_Fileversion=0.5.3.17
 #AutoIt3Wrapper_Res_Fileversion_AutoIncrement=p
 #AutoIt3Wrapper_Res_CompanyName=JuananBow
 #AutoIt3Wrapper_Res_LegalCopyright=JuananBow
@@ -106,10 +106,10 @@ While $iFileSourceReadLoop <= $iFileSourceLength
 			ExitLoop
 		Case 02 ;Extended Segment Address
 			Local $dSourceDataExtAddress = dec ($sSourceData) * $dSourceDataExtAddressOffset
-			ConsoleWrite ( "Line: " & $iFileSourceReadLoop & " / " & $iFileSourceLength & "   Data: (" & $dSourceExtended & ") Extended Segment Address   New address offset: " & "0x" & hex( $dSourceDataExtAddress) & @CRLF )
+			ConsoleWrite ( "Line: " & $iFileSourceReadLoop & " / " & $iFileSourceLength & "   Data: (" & $dSourceExtended & ") Extended Segment Address   New address offset: " & "0x" & hex ($dSourceDataExtAddress) & @CRLF )
 		Case 04 ;Extended Linear Address
 			Local $dSourceDataLinAddress = dec ($sSourceData) * $dSourceDataLinAddressOffset
-			ConsoleWrite ( "Line: " & $iFileSourceReadLoop & " / " & $iFileSourceLength & "   Data: (" & $dSourceExtended & ") Extended Linear Address   New address offset: " & "0x" & hex( $dSourceDataExtAddress) & @CRLF )
+			ConsoleWrite ( "Line: " & $iFileSourceReadLoop & " / " & $iFileSourceLength & "   Data: (" & $dSourceExtended & ") Extended Linear Address    New address offset: " & "0x" & hex ($dSourceDataLinAddress) & @CRLF )
 	EndSwitch
 
 ;~ 	MSGBOX (0, "", ( "0x" & hex(dec( StringMid ( $sSourceLine, 4 , 4 ))) & " + " & "0x" & hex( $dSourceDataExtAddress) & " + " & "0x" & hex( $dSourceDataAddressOffset) & @CRLF & "0x" & hex( $dSourceDataAddress) ))
